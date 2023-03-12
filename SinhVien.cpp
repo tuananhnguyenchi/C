@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <conio.h>
+#include <string.h>
 using namespace std;
 //
 
@@ -31,7 +32,8 @@ SinhVien::SinhVien () {
 class Menu {
     public:
         Menu();
-        vector<SinhVien> Database;
+        //vector<SinhVien> Database;
+        //void pressAnyKey()
         void ThemSinhVien();
         void CapNhatThongTin(int id);
         void XoaSinhVien(int id);
@@ -40,23 +42,25 @@ class Menu {
         void SapXepSinhVienTheoTen();
         void HienThiDanhSach();
 };
+vector<SinhVien> Database;
+void pressAnyKey();
 
 Menu::Menu(){
     int Key;  //Khoi tao phim nhan
     int id;
-    menu:
-    
-    printf("\nMENU\n");
-    printf("Nhan 1: Them Sinh Vien\n");
-    printf("Nhan 2: Cap nhat thong tin sinh vien boi ID\n");
-    printf("Nhan 3: Xoa Sinh vien boi ID\n");
-    printf("Nhan 4: Tim kiem Sinh Vien theo ten\n");
-    printf("Nhan 5: Sap xep sinh vien theo diem trung binh GPA\n");
-    printf("Nhan 6: Sap xep sinh vien theo ten\n");
-    printf("Nhan 7: Hien thi danh sach Sinh Vien\n");
-    printf("Nhan 8: Ghi danh sach sinh vien vao file SinhVien.txt\n");
-    printf("Nhan 0: Thoat khoi chuong trinh");
 
+    printf("\nMENU\n");
+    system("cls");
+    printf("****************************************************************\n");
+    printf("**Nhan 1: Them Sinh Vien                                      **\n");
+    printf("**Nhan 2: Cap nhat thong tin sinh vien boi ID                 **\n");
+    printf("**Nhan 3: Xoa Sinh vien boi ID                                **\n");
+    printf("**Nhan 4: Tim kiem Sinh Vien theo ten                         **\n");
+    printf("**Nhan 5: Sap xep sinh vien theo diem trung binh GPA          **\n");
+    printf("**Nhan 6: Sap xep sinh vien theo ten                          **\n");
+    printf("**Nhan 7: Hien thi danh sach Sinh Vien                        **\n");
+    printf("**Nhan 0: Thoat khoi chuong trinh                             **\n");
+    printf("****************************************************************\n");
     printf("\nNhap chuong trinh ban muon: ");
 
     scanf("%d", &Key);
@@ -64,9 +68,7 @@ Menu::Menu(){
     {
     case 1://Them Sinh Vien
         ThemSinhVien();
-        printf("Nhan 0 de quay lai menu");
-        scanf("%d", &Key);
-        goto menu;
+        pressAnyKey();
         break;
     case 2://Cap nhat thong tin sinh vien boi ID
         if (Database.size()>0)
@@ -74,16 +76,12 @@ Menu::Menu(){
             printf("Nhap ID: ");
             scanf("%d", &id);
             CapNhatThongTin(id);
-            printf("Nhan 0 de quay lai menu");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         else    
         {
             printf("Danh sach trong");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+             pressAnyKey();
         }
             break;
     case 3://Xoa Sinh vien boi ID
@@ -93,16 +91,12 @@ Menu::Menu(){
             scanf("%d", &id);
             XoaSinhVien(id);
             printf("Da xoa thanh cong \n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         else
         {
             printf("Danh sach trong\n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         break;
     case 4://Tim kiem Sinh Vien theo ten
@@ -113,15 +107,11 @@ Menu::Menu(){
             printf("Nhap ten can tim: ");
             scanf("%s", Ten_can_tim);
             TimKiemSinhVien(Ten_can_tim);
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         else{
             printf("Danh sach trong\n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         break;
     case 5://Sap xep sinh vien theo diem trung binh GPA
@@ -130,30 +120,22 @@ Menu::Menu(){
             printf("Sap xep sinh vien theo diem GPA");
             SapXepSinhVienTheoGPA();
             HienThiDanhSach();
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }else
         {
             printf("Danh sach trong\n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         break;
     case 6://Sap xep sinh vien theo ten
         if (Database.size()>0)
         {
             SapXepSinhVienTheoTen();
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }else
         {
             printf("Danh sach trong\n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+            pressAnyKey();
         }
         break;
     case 7://Hien thi danh sach Sinh Vien
@@ -161,22 +143,28 @@ Menu::Menu(){
     {
         printf("HIEN THI THONG TIN SINH VIEN\n");
         HienThiDanhSach();
-        printf("Nhan 0 de quay lai menu ");
-        scanf("%d", &Key);
-        goto menu;
+        pressAnyKey();
     }else
     {
         printf("Danh sach trong\n");
-            printf("Nhan 0 de quay lai menu ");
-            scanf("%d", &Key);
-            goto menu;
+        pressAnyKey();
     }
         break;
     case 0: 
         printf("Ban da thoat chuong trinh \n");
         getch();
         break;
-    }
+    default:
+         printf("Khong co chuc nang nay!");
+         printf("\nHay chon chuc nang trong hop menu.");
+         pressAnyKey();
+         break;
+     }
+}
+void pressAnyKey() {
+    printf  ( "\n\nBam phim bat ky de tiep tuc...");
+    getch();
+    system("cls");
 }
 void Diem_TB(SV &sv)
 {
@@ -195,15 +183,17 @@ void Xep_Loai(SV &sv)
         strcpy(sv.HOC_LUC,"YEU");
 }
 /*Ham them sinh vien*/
-void Menu::ThemSinhVien(){
+void Menu::ThemSinhVien()
+{
     SinhVien sv;
     printf("Them sinh vien: \n");
     printf("Nhap ten sinh vien: ");
-    scanf("%s", sv.TEN);
+    fflush(stdin);
+    gets(sv.TEN);
+    printf("Gioi tinh: ");
+    fflush(stdin);
+    gets( sv.GIOI_TINH);
 
-    printf("Gioitinh: ");
-    scanf("%s", sv.GIOI_TINH);
-    
     printf("Nhap diem toan: ");
     scanf("%lf", &sv.DIEM_TOAN);
     while((sv.DIEM_TOAN>10)||(sv.DIEM_TOAN<0))
@@ -360,7 +350,11 @@ void Menu::HienThiDanhSach(){
 }
 int main(int argc, char const *argv[])
 {
-   // Menu mn;
-   NHAP_DIEM(toan,20);
+	while(true)
+	{
+	
+    Menu mn;
+}
+ 
 }
 
