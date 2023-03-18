@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <vector>
+#include <stdbool.h>
 using namespace std;
 //
 typedef struct 
@@ -21,13 +22,15 @@ typedef struct
 typedef struct
 {
     uint8_t SO_BAN;
-    bool TRANG_THAI;
+    bool TRANG_THAI=false; // khởi tạo ban đầu là bàn không có người
     vector<so_luong_mon> DATA_MON;
 }thong_tin_ban;
 //
 static vector<thuc_don> Database_Thuc_Don;
-static vector<thong_tin_ban> Database_Thong_Tin_Ban;
+static vector<thong_tin_ban> Database_Thong_Tin_Ban(9);// khởi tạo 9 bàn 
+
 //===============================================================//
+
 void DanhSachMon(vector<thuc_don> Database)
 {
    printf("*****************************************\n");
@@ -92,7 +95,7 @@ void Quan_Ly::Them_Mon()
     td.STT=Database_Thuc_Don.size()+1;
 
     Database_Thuc_Don.push_back(td);
-
+    id++;
 }
 void Quan_Ly::Sua_Mon()
 {
@@ -167,27 +170,27 @@ void Quan_Ly::Hien_Thi_Danh_Sach_Mon()
 class Nhan_Vien
 {
     public:
-    void Goi_Mon();
-    void Tinh_Tien();
+    void Goi_Mon(uint8_t ban);
+    void Tinh_Tien(uint8_t ban);
 };
 
-void Nhan_Vien::Goi_Mon()
+void Nhan_Vien::Goi_Mon(uint8_t soban)
 {
-  uint8_t soban;
-  scanf("%d",&soban);
+  
   thong_tin_ban ttb;
   so_luong_mon slm;
   DanhSachMon(Database_Thuc_Don);
   uint8_t id;//ID mon an duoc nhap tu ban phim
   uint8_t sl;// Số lượng món ăn được nhập từ bàn phím
   printf(" Nhap ID mon an :");
-  scanf("%d",id);
+  scanf("%d",&id);
   while(check(id,Database_Thuc_Don)==false)
   {
     printf("ID mon an khong hop le.De nghi nhap lai");
+    scanf("%d",&id);
   }
   printf("Nhap so luong mon an:");
-  scanf("%d",sl);
+  scanf("%d",&sl);
   ttb.SO_BAN=soban;
   ttb.TRANG_THAI=true ;// Tức là đã có người ngồi còn flase là bàn còn trống
   slm.SO_LUONG=sl;
@@ -198,12 +201,8 @@ void Nhan_Vien::Goi_Mon()
   ttb.DATA_MON.push_back(slm);
   Database_Thong_Tin_Ban.push_back(ttb);
 }
-void Nhan_Vien::Tinh_Tien()
+void Nhan_Vien::Tinh_Tien(uint8_t ban)
 {
-   uint8_t ban; // số bàn đã đánh dấu sẵn
-   printf(" Nhap vao  ban can thanh toan.");
-   scanf("%d",&ban);
-
        printf("*****************************************\n");
        printf("*  SO BAN    ID    TEN MON     SO LUONG    GIA   ***\n");
     for(uint8_t i=0;i<Database_Thong_Tin_Ban.size();i++)
@@ -244,8 +243,10 @@ DisPlay::DisPlay()
     {
         case 1:
         DisPlay_Quan_Ly();
+        break;
         case 2:
         DisPlay_Nhan_Vien();
+        break;
         default:
          printf(" Khong hop le .");
          break;
@@ -256,7 +257,7 @@ void DisPlay::DisPlay_Quan_Ly()
 {  uint8_t key;
    do
    {
-    
+    //uint8_t key;
     printf("************************************************\n");
     printf("**         CHE DO QUAN LY                     **\n");
     printf("**   1.Them Mon                               **\n");
@@ -267,6 +268,7 @@ void DisPlay::DisPlay_Quan_Ly()
     printf("************************************************\n");
     printf(" Nhap che do ban muon su dung:");
     scanf("%d",&key);
+    //uint8_t key;
     switch(key)
     {
       case 1:
@@ -299,12 +301,75 @@ void DisPlay::DisPlay_Quan_Ly()
     }
    } while(key!=5);
 
-
+  // return 0;
 }
 void DisPlay::DisPlay_Nhan_Vien()
 {
-  
+  uint8_t key;
+  do
+  {  
+   printf("********************************************************************\n");
+   printf("**                     CHE DO NHAN VIEN                           **\n");
+   for(uint8_t i =0; i<9; i++)
+    {
+      
+        printf("BAN %d\t", i+1);
+    }
+    printf("\n");    
+    for(uint8_t i = 0; i<9; i++)
+    {
+        if(Database_Thong_Tin_Ban[i].TRANG_THAI == false) printf("  -  \t");
+        else printf("  x  \t");
+    } 
+    
+    printf("\n*********************************************************************\n"); 
+    uint8_t ban;
+    printf("Chon ban :");
+    scanf("%d",&ban);
+
+   // While(ban>9)
+   // {
+    //  printf("Ban khong hop le.Moi chon lai:");
+     // scanf("%d",&ban);
+   // }
+
+   printf("********************************************************************\n");
+   printf("**                     CHE DO NHAN VIEN                           **\n");
+   printf("**   1.Goi Mon                                                    **\n");
+   printf("**   2.Tinh Tien                                                  **\n");
+   printf("**   3.Quay lai                                                   **\n");
+   printf("********************************************************************\n");
+   printf(" Nhap che do ban muon:");
+   scanf("%d",&key);
+   switch(key)
+   {
+    case 1:
+    uint8_t key1;
+    do
+    {
+     nv.Goi_Mon(ban);
+     printf("**************************************\n");
+     printf("** 1.Tiep tuc goi mon               **\n");
+     printf("** 2.Quay Lai                       **\n");
+     printf("**************************************\n");
+     printf("Nhap lua chon:");
+     scanf("%d",&key1);
+     }while(key1!=2);
+     break;
+    case 2:
+     while(1)
+     {
+      nv.Tinh_Tien(ban);
+     } 
+      //printf("")
+      break;
+    
+
+   } 
+  }while(key!=3);
 }
+
+
 //
 int main(int argc, char const *argv[])
 { 
@@ -312,6 +377,7 @@ int main(int argc, char const *argv[])
    DisPlay Menu;
    while(true)
    {
+   	DisPlay Menu;
     Menu;
    }
 }
