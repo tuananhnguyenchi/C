@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <vector>
 #include <stdbool.h>
+#include <string.h>
 using namespace std;
 //
 typedef struct 
@@ -21,7 +22,7 @@ typedef struct
 //
 typedef struct
 {
-    uint8_t SO_BAN;
+    //uint8_t SO_BAN;
     bool TRANG_THAI=false; // khởi tạo ban đầu là bàn không có người
     vector<so_luong_mon> DATA_MON;
 }thong_tin_ban;
@@ -71,17 +72,12 @@ uint8_t checkMonAn(uint8_t ID,vector<thuc_don> Database)
 class Quan_Ly
 {
     public:
-    Quan_Ly();
-    //vector<thuc_don> Database_Thuc_Don;
     void Them_Mon();
     void Sua_Mon();
     void Xoa_Mon();
     void Hien_Thi_Danh_Sach_Mon();
 };
-Quan_Ly::Quan_Ly()
-{
-    printf("DAY LA TRANG DANH CHO QUAN LY \n");
-}
+
 void Quan_Ly::Them_Mon()
 {
     thuc_don td;
@@ -174,10 +170,11 @@ class Nhan_Vien
     void Tinh_Tien(uint8_t ban);
 };
 
-void Nhan_Vien::Goi_Mon(uint8_t soban)
+void Nhan_Vien::Goi_Mon(uint8_t ban)
 {
   
-  thong_tin_ban ttb;
+  //thong_tin_ban ttb;
+  Database_Thong_Tin_Ban[ban-1].TRANG_THAI=true;
   so_luong_mon slm;
   DanhSachMon(Database_Thuc_Don);
   uint8_t id;//ID mon an duoc nhap tu ban phim
@@ -191,33 +188,69 @@ void Nhan_Vien::Goi_Mon(uint8_t soban)
   }
   printf("Nhap so luong mon an:");
   scanf("%d",&sl);
-  ttb.SO_BAN=soban;
-  ttb.TRANG_THAI=true ;// Tức là đã có người ngồi còn flase là bàn còn trống
-  slm.SO_LUONG=sl;
-  //slm.THONG_TIN_MON=Database_Thuc_Don[h];
- // ttb.DATA_MON.so_luong_mon=sl; //
   uint8_t h=checkMonAn(id,Database_Thuc_Don);
-  slm.THONG_TIN_MON=Database_Thuc_Don[h];
-  ttb.DATA_MON.push_back(slm);
-  Database_Thong_Tin_Ban.push_back(ttb);
+  slm.SO_LUONG=sl;
+  slm.THONG_TIN_MON.GIA=Database_Thuc_Don[h].GIA;
+  strcpy(slm.THONG_TIN_MON.TEN_MON,Database_Thuc_Don[h].TEN_MON);
+  Database_Thong_Tin_Ban[ban-1].DATA_MON.push_back(slm);
+   printf("****************************************************\n");
+   printf("**       CAC MON DA GOI                            **\n");
+   printf("*  SO BAN    ID    TEN MON     SO LUONG    GIA   ***\n");
+   for(uint8_t j=0;j<Database_Thong_Tin_Ban[ban-1].DATA_MON.size();j++)
+        {
+        printf("*  %d       %d      %s          %d       %d ***\n",ban,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.ID,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.TEN_MON,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].SO_LUONG,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.GIA);
+        //Thanhtoan=Thanhtoan+((Database_Thong_Tin_Ban[ban-1].DATA_MON[j].SO_LUONG)*(Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.GIA));
+        }
+    printf("*****************************************************\n");
+    printf("\n");
+ 
 }
 void Nhan_Vien::Tinh_Tien(uint8_t ban)
 {
-       printf("*****************************************\n");
+     uint32_t Thanhtoan=0;// Số tiền khách hàng cần phải thanh toán
+     
+       printf("****************************************************\n");
+       printf("**           HOA DON                              **\n");
        printf("*  SO BAN    ID    TEN MON     SO LUONG    GIA   ***\n");
-    for(uint8_t i=0;i<Database_Thong_Tin_Ban.size();i++)
-    {
-       if(Database_Thong_Tin_Ban[i].SO_BAN==ban)
-       {
-        for(uint8_t j=0;j<Database_Thong_Tin_Ban[i].DATA_MON.size();j++)
+    
+        for(uint8_t j=0;j<Database_Thong_Tin_Ban[ban-1].DATA_MON.size();j++)
         {
-        printf("*  %d     %d    %s      %d    %d*%d***\n",Database_Thong_Tin_Ban[i].SO_BAN,Database_Thong_Tin_Ban[i].DATA_MON[j].THONG_TIN_MON.ID,Database_Thong_Tin_Ban[i].DATA_MON[j].THONG_TIN_MON.TEN_MON,Database_Thong_Tin_Ban[i].DATA_MON[j].SO_LUONG,Database_Thong_Tin_Ban[i].DATA_MON[j].SO_LUONG,Database_Thong_Tin_Ban[i].DATA_MON[j].THONG_TIN_MON.GIA);
+        printf("*  %d       %d      %s          %d       %d*%d ***\n",ban,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.ID,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.TEN_MON,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].SO_LUONG,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].SO_LUONG,Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.GIA);
+        Thanhtoan=Thanhtoan+((Database_Thong_Tin_Ban[ban-1].DATA_MON[j].SO_LUONG)*(Database_Thong_Tin_Ban[ban-1].DATA_MON[j].THONG_TIN_MON.GIA));
         }
-        Database_Thong_Tin_Ban[i].TRANG_THAI=false;
-        break;
-    }
-       printf("*****************************************\n");
-    }     
+      
+       // Database_Thong_Tin_Ban[i].TRANG_THAI=false;
+        //break;
+       
+      // printf("** THANH TIEN: %d                                ***\n",Thanhtoan);
+       //printf("*****************************************************\n");
+      
+       printf("** THANH TIEN: %d   dong                          ***\n",Thanhtoan);
+       printf("*****************************************************\n");
+       printf("\n");
+       uint8_t key;
+       do
+       {
+         printf("*****************************************************\n");
+         printf("** 1.Thanh Toan                                  ****\n");
+         printf("** 2. Quay Lai                                   ****\n");
+         printf("*****************************************************\n");
+         printf(" Nhap lua chon cua ban:");
+         scanf("%d",&key);
+         switch(key)
+         {
+          case 1:
+            Database_Thong_Tin_Ban[ban-1].TRANG_THAI=false;
+            Database_Thong_Tin_Ban[ban-1].DATA_MON.clear();
+            break;
+          case 2:
+            break;
+          default:
+           printf(" Khong hop le.Nhap lai:");
+           break;
+         };
+       }while(key=!2);
+
 }
 
 class DisPlay 
@@ -258,6 +291,7 @@ void DisPlay::DisPlay_Quan_Ly()
    do
    {
     //uint8_t key;
+    //system("cls");
     printf("************************************************\n");
     printf("**         CHE DO QUAN LY                     **\n");
     printf("**   1.Them Mon                               **\n");
@@ -276,8 +310,11 @@ void DisPlay::DisPlay_Quan_Ly()
         do
         {
          ql.Them_Mon();
-         printf("1.Them mon moi\n");
-         printf("2.Quay lai quan ly\n");
+         printf("\n");
+         printf("*******************************\n");
+         printf("*** 1.Them mon moi          ***\n");
+         printf("*** 2.Quay lai quan ly      ***\n");
+         printf("*******************************\n");
          //uint8_t key1;
          printf("Nhap che do ban muon:");
          scanf("%d",&key1);
@@ -285,13 +322,49 @@ void DisPlay::DisPlay_Quan_Ly()
         while(key1!=2);
         break;
       case 2:
-       ql.Sua_Mon();
-       break;
+       //ql.Sua_Mon();
+       uint8_t key2;
+        do
+        {
+         ql.Sua_Mon();
+         printf("\n");
+         printf("*******************************\n");
+         printf("*** 1.Sua Mon               ***\n");
+         printf("*** 2.Quay lai quan ly      ***\n");
+         printf("*******************************\n");
+         //uint8_t key1;
+         printf("Nhap che do ban muon:");
+         scanf("%d",&key2);
+        }
+        while(key2!=2);
+        break;
+       //break;
       case 3:
-        ql.Xoa_Mon();
+        uint8_t key3;
+        do
+        {
+         ql.Xoa_Mon();
+         printf("\n");
+         printf("*******************************\n");
+         printf("*** 1.Xoa Mon               ***\n");
+         printf("*** 2.Quay lai quan ly      ***\n");
+         printf("*******************************\n");
+         //uint8_t key1;
+         printf("Nhap che do ban muon:");
+         scanf("%d",&key3);
+        }
+        while(key3!=2);
         break;
       case 4:
+       uint8_t key4;
+       do
+       {
+        printf("\n");
+        printf(" DANH SACH MON:\n");
         ql.Hien_Thi_Danh_Sach_Mon();
+        printf("Nhan 0 de quay lai quan ly:");
+        scanf("%d",&key2);
+       }while(key4!=0);
         break;
       case 5:
         break;
@@ -323,15 +396,19 @@ void DisPlay::DisPlay_Nhan_Vien()
     } 
     
     printf("\n*********************************************************************\n"); 
+    printf("***   NHAP TU 1-9 DE CHON BAN                                       ***\n");
+    printf("***   NHAP TU 0 DE THOAT                                     ***\n");
     uint8_t ban;
     printf("Chon ban :");
     scanf("%d",&ban);
-
-   // While(ban>9)
-   // {
-    //  printf("Ban khong hop le.Moi chon lai:");
-     // scanf("%d",&ban);
-   // }
+    if(ban==0)
+    {
+    	break;
+	}
+    else
+    {
+	
+   
 
    printf("********************************************************************\n");
    printf("**                     CHE DO NHAN VIEN                           **\n");
@@ -348,6 +425,8 @@ void DisPlay::DisPlay_Nhan_Vien()
     do
     {
      nv.Goi_Mon(ban);
+     nv.Goi_Mon(ban);
+     nv.Goi_Mon(ban);
      printf("**************************************\n");
      printf("** 1.Tiep tuc goi mon               **\n");
      printf("** 2.Quay Lai                       **\n");
@@ -357,20 +436,38 @@ void DisPlay::DisPlay_Nhan_Vien()
      }while(key1!=2);
      break;
     case 2:
-     while(1)
-     {
-      nv.Tinh_Tien(ban);
-     } 
-      //printf("")
+     uint8_t key2;
+       do
+       {
+         nv.Tinh_Tien(ban);
+         printf("*****************************************************\n");
+         printf("** 1.Thanh Toan                                  ****\n");
+         printf("** 2. Quay Lai                                   ****\n");
+         printf("*****************************************************\n");
+         printf(" Nhap lua chon cua ban:");
+         scanf("%d",&key2);
+         switch(key)
+         {
+          case 1:
+            Database_Thong_Tin_Ban[ban-1].TRANG_THAI=false;
+            Database_Thong_Tin_Ban[ban-1].DATA_MON.clear();
+            break;
+          case 2:
+            break;
+          default:
+           printf(" Khong hop le.Nhap lai:");
+           break;
+         };
+       }while(key2=!2);
       break;
     
 
-   } 
+   }
+}
   }while(key!=3);
 }
 
 
-//
 int main(int argc, char const *argv[])
 { 
    
@@ -380,4 +477,5 @@ int main(int argc, char const *argv[])
    	DisPlay Menu;
     Menu;
    }
+   
 }
