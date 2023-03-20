@@ -1,9 +1,10 @@
 #include<stdio.h>
+#include<string.h>
 
 class DienThoai
 {
     private:
-      uint8_t ID;
+      uint16_t ID;
       char TenDienThoai[20];
       char HangSanXuat[20];
       double Gia;
@@ -11,12 +12,33 @@ class DienThoai
       DienThoai(char Ten[],char Hang[],double gia);
       char *getTenDienThoai(char Ten[]);
       char *getHangSanXuat(char Hang[]);
-      double getGia(double Gia);
+      double getGia(double gia);
       void setDienThoai();
       void setHangSanXuat();
       void setGia();
 
 };
+DienThoai::DienThoai(char Ten[],char Hang[],double gia)
+{
+  static uint16_t id=100;
+  strcpy(TenDienThoai,Ten);
+  strcpy(HangSanXuat,Hang);
+  Gia=gia;
+  ID=id;
+  id++;
+}
+char DienThoai::*getTenDienThoai(char Ten[])
+{
+
+}
+char DienThoai::getHangSanXuat(char Hang[])
+{
+
+}
+double DienThoai::getGia(double gia)
+{
+  
+}
 
 class QuanLyDienThoai
 {
