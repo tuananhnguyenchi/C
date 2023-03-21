@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<string.h>
-
+#include<vector>
+#include <stdint.h>
+// class Điện Thoại
 class DienThoai
 {
     private:
@@ -9,52 +11,79 @@ class DienThoai
       char HangSanXuat[20];
       double Gia;
     public:
-      DienThoai(char Ten[],char Hang[],double gia);
-      char *getTenDienThoai(char Ten[]);
-      char *getHangSanXuat(char Hang[]);
-      double getGia(double gia);
-      void setDienThoai();
-      void setHangSanXuat();
-      void setGia();
+      DienThoai();
+      char *getTenDienThoai();
+      char *getHangSanXuat();
+      double getGia();
+      void setDienThoai(char Ten[]);
+      void setHangSanXuat(char Hang[]);
+      void setGia(double gia);
+      void NhapThongTinDienThoai();
 
 };
-DienThoai::DienThoai(char Ten[],char Hang[],double gia)
+DienThoai::DienThoai()
 {
   static uint16_t id=100;
-  strcpy(TenDienThoai,Ten);
-  strcpy(HangSanXuat,Hang);
-  Gia=gia;
+  printf("Nhap ten dien thoai:");
+  fflush(stdin);
+	gets(TenDienThoai);
+  printf("Nhap hang san xuat dien thoai:");
+  fflush(stdin);
+	gets(HangSanXuat);
+  printf("Nhap gia dien thoai:");
+  scanf("%lf",&Gia);
   ID=id;
   id++;
 }
-char DienThoai::*getTenDienThoai(char Ten[])
+char* DienThoai:: getTenDienThoai()
 {
-
+     return TenDienThoai;
 }
-char DienThoai::getHangSanXuat(char Hang[])
+char* DienThoai:: getHangSanXuat()
 {
-
+    return HangSanXuat;
 }
-double DienThoai::getGia(double gia)
+double DienThoai::getGia()
 {
+  return Gia;
   
 }
+void DienThoai::setDienThoai(char Ten[])
+{
+  strcpy(TenDienThoai,Ten);
+}
+void DienThoai::setHangSanXuat(char Hang[])
+{
+  strcpy(HangSanXuat,Hang);
+}
+void DienThoai::setGia(double gia)
+{
+  Gia=gia;
+}
 
+
+//class quản lý điện thoại
 class QuanLyDienThoai
 {
     private:
-    vecter<DienThoai> DanhSachDienThoai;
+      //vector <DienThoai> DanhSachDienThoai;
     public:
-    void ThemDienThoai(DienThoai &dt);
+    void ThemDienThoai(DienThoai dt);
     void SuaDienThoai(uint8_t id);
     void XoaDienThoai(uint8_t id);
     void HienThiDanhSachDienTHoai();
 };
+void QuanLyDienThoai::ThemDienThoai(DienThoai dt)
+{
+   printf("Nhap Thong Tin Dien Thoai Can Them Vao:\n");
+   
+
+}
 
 class SmartPhone:public DienThoai
 {
     private:
-     uint16_t dungLuongPin
+     uint16_t dungLuongPin;
      uint8_t dungLuongBoNho;
     public:
      SmartPhone(char ten[],char hang[],double gia,uint16_t pin,uint8_t boNho);
@@ -62,9 +91,11 @@ class SmartPhone:public DienThoai
      uint8_t getDungLuongBoNho(uint8_t boNho);
      void     setDungLuongPin(uint16_t pin);
      void     setDungLuongBoNho(uint8_t boNho);
-}
+};
 
-int main()
+int main(int argc, char const *argv[])
 {
-    
+    DienThoai dt;
+    double h;
+    printf("Gia dien thoai la %3f",dt.getGia());
 }
