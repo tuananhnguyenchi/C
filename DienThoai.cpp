@@ -10,95 +10,187 @@ class DienThoai
 {
     private:
       uint8_t ID;
-      char TenDienThoai[20];
-      char HangSanXuat[20];
-      double Gia;
+      char tenDienThoai[20];
+      char hangSanXuat[20];
+      double giaDienThoai;
     public:
-      DienThoai();
+      DienThoai(char ten[], char hang[], double gia);
       char *getTenDienThoai();
       char *getHangSanXuat();
       double getGia();
       uint8_t getID();
-      void setDienThoai();
-      void setHangSanXuat();
-      void setGia();
+      void setDienThoai(char ten[]);
+      void setHangSanXuat(char hang[]);
+      void setGia(double gia);
 };
-DienThoai::DienThoai()
+DienThoai::DienThoai(char ten[], char hang[], double gia)
 {
   static uint8_t id=100;
-  printf("Nhap ten dien thoai:");
-  fflush(stdin);
-	gets(TenDienThoai);
-  printf("Nhap hang san xuat dien thoai:");
-  fflush(stdin);
-	gets(HangSanXuat);
-  printf("Nhap gia dien thoai:");
-  scanf("%d",&Gia);
+  ID=id;
+  strcpy(tenDienThoai,ten);
+  strcpy(hangSanXuat,hang);
+  giaDienThoai=gia;
   ID=id;
   id++;
 }
 char* DienThoai:: getTenDienThoai()
 {
-     return TenDienThoai;
+     return tenDienThoai;
 }
 char* DienThoai:: getHangSanXuat()
 {
-    return HangSanXuat;
+    return hangSanXuat;
 }
 double DienThoai::getGia()
 {
-  return Gia;
-  
+  return giaDienThoai; 
 }
 uint8_t DienThoai::getID()
 {
   return ID;
 }
-void DienThoai::setDienThoai()
+void DienThoai::setDienThoai(char ten[])
 {
-  char Ten[];
-  printf("Nhap ten dien thoai:");
-  fflush(stdin);
-	gets(Ten);
-  strcpy(TenDienThoai,Ten);
+ 
+  strcpy(tenDienThoai,ten);
 }
-void DienThoai::setHangSanXuat()
+void DienThoai::setHangSanXuat(char hang[])
 {
-  char Hang[];
-  printf("Nhap hang san xuat dien thoai:");
-  fflush(stdin);
-	gets(Hang);
-  strcpy(HangSanXuat,Hang);
+  strcpy(hangSanXuat,hang);
 }
-void DienThoai::setGia()
+void DienThoai::setGia(double gia)
 {
-  double gia;
-  printf("Nhap gia dien thoai:");
-  scanf("%d",&gia);
-  Gia=gia;
+
+  giaDienThoaiơ=gia;
 }
 //class quản lý điện thoại
 class QuanLyDienThoai
 {
     private:
       vector <DienThoai> Database_Dien_Thoai;
+      enum TRANG_THAI
+      {
+        THEM=1,
+        SUA,
+        XOA,
+        HIEN_THI,
+      }TRANG_THAI;
+      bool kiemTraId(uint8_t id);
     public:
-    void ThemDienThoai(DienThoai dt);
-    void SuaDienThoai(uint8_t id);
-    void XoaDienThoai(uint8_t id);
-    void HienThiDanhSachDienTHoai();
+      QuanLyDienThoai();
+      void ThemDienThoai();
+      void SuaDienThoai();
+      void XoaDienThoai();
+      void HienThiDanhSachDienTHoai();
 };
+QuanLyDienThoai::QuanLyDienThoai()
+{
+  while(1)
+  {
+    uint8_t luaChon;
+    printf("*********************************************\n");
+    printf("** 1.Them Dien Thoai Moi Vao Danh Sach     **\n");
+    printf("** 2.Sua Thong Tin Dien Thoai              **\n");
+    printf("** 3.Xoa Dien Thoai Khoi Danh Sach         **\n");
+    printf("** 4.Hien Thi Danh Sach Dien Thoai         **\n");
+    printf("*********************************************\n");
+    printf("\n");
+    printf("Moi nhap lua chon cua ban:");
+    scanf("%d",&luaChon);
+    swith(luaChon)
+    {
+      case THEM:
+       uint8_t key;
+       do{
+         printf("***********************\n");
+         printf("** 1.Them dien thoai **\n");
+         printf("** 2.Thoat           **\n");
+         printf("***********************\n");
+         printf("\n");
+         printf("Moi nhap lua chon cua ban:");
+         scanf("%d",&key);
+         if(key==1)
+         {
+          ThemDienThoai();
+         } 
+         if((key!=1)&&(key!=2))
+         {
+          printf("Khong hop le.De nghi chi nhap 1 hoac 2 \n");
+         }    
+         }while(key!=2);
+         break;
+      case SUA:
+         uint8_t key;
+         do
+         {
+           printf("***********************************\n");
+           printf("*** Nhan 1 tiep tuc sua         ***\n");
+           printf("*** Nhan 0 de thoat             ***\n");
+           printf("***********************************\n");
+           printf("\n");
+           printf("Nhap che do ban muon:");
+           scanf("%d",&key);
+           if(key==1)
+           {
+            SuaDienThoai()
+           }
+           if((key!=1)&&(key!=0))
+           {
+            printf("Khong hop le.De nghi chi nhap 1 hoac 0 thoi.\n");
+           }
+         } while(key!=0)
+      case XOA:
+      case HIEN_THI:
+      default :
+    }
+
+  }
+}
+bool QuanLyDienThoai::kiemTraId(uint8_t id)
+{
+  for(uint8_t i=0;i<Database_Dien_Thoai.size();i++)
+  {
+     if(id=Database_Dien_Thoai[i].getID())
+     {
+       return true;
+     }
+     
+  }
+  return false;
+}
 void QuanLyDienThoai::ThemDienThoai()
 {
+   char tenDienThoai[20];
+   char hangSanXuat[20];
+   double giaDienThoai;
    printf("Nhap Thong Tin Dien Thoai Can Them Vao:\n");
-   DienThoai dt;
+   printf("Nhap vao ten dien thoai:");
+   fflush(stdin);
+   gets(tenDienThoai);
+   printf("Nhap vao hang san xuat dien thoai:");
+   fflush(stdin);
+   gets(hangSanXuat);
+   printf("Nhap vao gia dien thoai:");
+   scanf("%d",&giaDienThoai);
+   DienThoai dt(tenDienThoai,hangSanXuat,giaDienThoai);
    Database_Dien_Thoai.push_back(dt);
 }
-void QuanLyDienThoai:: SuaDienThoai(uint8_t id)
+void QuanLyDienThoai:: SuaDienThoai()
 {  
-    uint8_t h;
-    for(uint8_t i=0;i<Database_Dien_Thoai.size();i++)
-    {  
+    uint8_t key,idTam;
+    printf("Nhap ID dien thoai can sua:\n");
+    scanf("%d",&idTam);
+    do
+    {
+      if(kiemTraId(idTam)==false)
+      {
+       printf("Dien thoai can sua khong ton tai\n");
+      }
+     else
+      {
+       uint8_t h;
+      for(uint8_t i=0;i<Database_Dien_Thoai.size();i++)
+      {  
        if(id==Database_Dien_Thoai[i].getID())
        {
          printf("****************************************************\n");
@@ -125,20 +217,36 @@ void QuanLyDienThoai:: SuaDienThoai(uint8_t id)
       case 0:
        break;
       case 1:
-        Database_Dien_Thoai[h].setDienThoai();
+        char ten[20];
+        printf("Nhap ten moi cua dien thoa:");
+        fflush(stdin);
+        gets(ten);
+        Database_Dien_Thoai[h].setDienThoai(ten);
         break;
       case 2:
-        Database_Dien_Thoai[h].setGia();
+        char gia[20];
+        printf("Nhap gia moi cua dien thoai:");
+        fflush(stdin);
+        gets(gia);
+        Database_Dien_Thoai[h].setGia(gia);
         break;
       case 3:
-        Database_Dien_Thoai[h].setHangSanXuat();
+        char hang[20];
+        printf("Nhap hang san xuat moi cua dien thoai:");
+        fflush(stdin);
+        gets(hang);
+        Database_Dien_Thoai[h].setHangSanXuat(hang);
         break;
       default :
+        printf(" Khong hop le .De nghi chi nhap 1/2/3/0 va khong nhap so khac\n");
         break;  
-    }   
+    }
+  } 
+  }while(key!=0); 
 }
 void QuanLyDienThoai::XoaDienThoai(uint8_t id)
 {
+   
   
 }
 void QuanLyDienThoai::HienThiDanhSachDienTHoai()
