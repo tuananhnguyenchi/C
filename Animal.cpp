@@ -13,7 +13,6 @@ class Animal
     uint8_t animalAge;
     uint16_t animalWeigth;
     public:
-    Animal();
     Animal(const char inputAnimalName[], const  uint8_t inputAnimalAge, const uint16_t inputAnimalWeigth);
     uint8_t getID();
     char* getAnimalName() ;
@@ -76,6 +75,7 @@ class Animals
         }state;
     public:
     Animals();
+    void Swap(Animal &A,Animal &B);
     void InputAnimalsImformation();
     void CompareAge();
     void CompareWeigth();
@@ -87,6 +87,8 @@ Animals::Animals()
     while(true)
     {
         uint8_t select;
+        do
+        {
         printf("****************************************************************\n");
         printf("*** 1.Enter animal imformtion to campare.                     ***\n");
         printf("*** 2.List sorted by age of animals from lowest to highest    ***\n");
@@ -94,11 +96,9 @@ Animals::Animals()
         printf("*** 4.Remove the animal name from the list                    ***\n");
         printf("*** 5.Exit                                                    ***\n");
         printf("*****************************************************************\n");
-        printf("\n");
+        printf("\n");  
         printf("Enter your selection:");
         scanf("%d",&select);
-        do
-        {  
             switch(select)
             {
             case INPUT:
@@ -132,7 +132,6 @@ Animals::Animals()
                 printf("Error.");
                }
               }while(selectAge!=1);
-               //CompareAge();
                break;
             case WEIGTH:
                uint8_t selectWeigth;
@@ -175,6 +174,24 @@ Animals::Animals()
         }while(select!=5);
     }
 }
+/*Algorithmic math position*/
+void Animals::Swap(Animal &A,Animal &B)
+{
+    Animal Temp("",0,0);
+    //Temp=A
+    Temp.setAnimalName(A.getAnimalName());
+    Temp.setAnimalAge(A.getAnimalAge());
+    Temp.setAnimalWeigth(A.getAnimalWeigth());
+    //A=B
+    A.setAnimalName(B.getAnimalName());
+    A.setAnimalAge(B.getAnimalAge());
+    A.setAnimalWeigth(B.getAnimalWeigth());
+    //B=Temp
+    B.setAnimalName(Temp.getAnimalName());
+    B.setAnimalAge(Temp.getAnimalAge());
+    B.setAnimalWeigth(Temp.getAnimalWeigth());
+    
+}
 /*Enter animal imformtion to campare*/
 void Animals::InputAnimalsImformation()
 {
@@ -205,10 +222,7 @@ void Animals ::CompareAge()
       {
         if(Database[i].getAnimalAge()>Database[j].getAnimalAge())
         {
-            Animal Temp("",0,0);
-            Temp=Database[i];
-            Database[i]=Database[j];
-            Database[j]=Temp;
+            Swap(Database[i],Database[j]);
         }
       }
     }
@@ -216,7 +230,7 @@ void Animals ::CompareAge()
    printf(" ID    NAME      AGE     WIETH     \n");
    for(uint8_t i=0;i<Database.size();i++)
    {
-    printf(" %d    %c       %d      %d        \n",Database[i].getID(),Database[i].getAnimalName(),Database[i].getAnimalAge(),Database[i].getAnimalWeigth());
+    printf(" %d    %s       %d      %d        \n",Database[i].getID(),Database[i].getAnimalName(),Database[i].getAnimalAge(),Database[i].getAnimalWeigth());
    } 
 }
 /*List sorted by weigth of animals from lowest to highest */
@@ -228,10 +242,7 @@ void Animals:: CompareWeigth()
       {
         if(Database[i].getAnimalWeigth()>Database[j].getAnimalWeigth())
         {
-            Animal Temp("",0,0);
-            Database[i]=Temp;
-            Database[i]=Database[j];
-            Database[j]=Temp;
+            Swap(Database[i],Database[j]);
         }
       }
     }
@@ -239,7 +250,7 @@ void Animals:: CompareWeigth()
     printf(" ID    NAME      AGE     WIETH     \n");
     for(uint8_t i=0;i<Database.size();i++)
    {
-     printf(" %d    %c        %d      %d        \n",Database[i].getID(),Database[i].getAnimalName(),Database[i].getAnimalAge(),Database[i].getAnimalWeigth());
+     printf(" %d    %s        %d      %d        \n",Database[i].getID(),Database[i].getAnimalName(),Database[i].getAnimalAge(),Database[i].getAnimalWeigth());
    } 
 }
 void Animals::removeAnimals()
@@ -263,4 +274,5 @@ void Animals::removeAnimals()
 int main(int argc, char const *argv[])
 {
     Animals a;
+   
 }
